@@ -1,3 +1,8 @@
+const OPERATION_ADD = "ADD";
+const OPERATION_SUBTRACT = "SUBTRACT";
+const OPERATION_MULTIPLY = "MULTIPLY";
+const OPERATION_DIVIDE = "DIVIDE";
+
 const defaultResult = 0;
 let currentResult = defaultResult;
 let logEntries = [];
@@ -25,39 +30,36 @@ function writeToLog(operation, previousResult, number, newResult) {
   console.log(logEntries);
 }
 
-function add() {
+// Executes operation on currentResult and calls output and logging functions
+function calculate(operation) {
   const enteredNumber = getUserInput();
   const initialResult = currentResult;
-  currentResult += enteredNumber;
-  createAndWriteOutput("+", initialResult, enteredNumber);
-  writeToLog("ADD", initialResult, enteredNumber, currentResult);
+  let operator;
+  switch (operation) {
+    case OPERATION_ADD:
+      currentResult += enteredNumber;
+      operator = "+";
+      break;
+    case OPERATION_SUBTRACT:
+      currentResult -= enteredNumber;
+      operator = "-";
+      break;
+    case OPERATION_MULTIPLY:
+      currentResult *= enteredNumber;
+      operator = "*";
+      break;
+    case OPERATION_DIVIDE:
+      currentResult /= enteredNumber;
+      operator = "/";
+      break;
+    default:
+      break;
+  }
+  createAndWriteOutput(operator, initialResult, enteredNumber);
+  writeToLog(operation, initialResult, enteredNumber, currentResult);
 }
 
-function subtract() {
-  const enteredNumber = getUserInput();
-  const initialResult = currentResult;
-  currentResult -= enteredNumber;
-  createAndWriteOutput("-", initialResult, enteredNumber);
-  writeToLog("SUBTRACT", initialResult, enteredNumber, currentResult);
-}
-
-function multiply() {
-  const enteredNumber = getUserInput();
-  const initialResult = currentResult;
-  currentResult *= enteredNumber;
-  createAndWriteOutput("*", initialResult, enteredNumber);
-  writeToLog("MULTIPLY", initialResult, enteredNumber, currentResult);
-}
-
-function divide() {
-  const enteredNumber = getUserInput();
-  const initialResult = currentResult;
-  currentResult /= enteredNumber;
-  createAndWriteOutput("/", initialResult, enteredNumber);
-  writeToLog("DIVIDE", initialResult, enteredNumber, currentResult);
-}
-
-addBtn.addEventListener("click", add);
-subtractBtn.addEventListener("click", subtract);
-multiplyBtn.addEventListener("click", multiply);
-divideBtn.addEventListener("click", divide);
+addBtn.addEventListener("click", calculate.bind(this, OPERATION_ADD));
+subtractBtn.addEventListener("click", calculate.bind(this, OPERATION_SUBTRACT));
+multiplyBtn.addEventListener("click", calculate.bind(this, OPERATION_MULTIPLY));
+divideBtn.addEventListener("click", calculate.bind(this, OPERATION_DIVIDE));
